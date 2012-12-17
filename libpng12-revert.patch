@@ -1,0 +1,58 @@
+--- libpng-1.2.12/scripts/makefile.gcmmx.orig	2006-06-29 10:10:33.974440000 +0200
++++ libpng-1.2.12/scripts/makefile.gcmmx	2006-06-29 10:12:14.144440000 +0200
+@@ -142,12 +142,10 @@
+ $(LIBSOVER): $(OBJSDLL)
+ 	$(CC) -shared -Wl,-soname,$(LIBSOMAJ) \
+ 	-o $(LIBSOVER) \
+-	$(OBJSDLL)
++	$(OBJSDLL) -lz -lm
+ 
+-$(OLDSOVER): $(OBJSDLL)
+-	$(CC) -shared -Wl,-soname,$(OLDSOMAJ) \
+-	-o $(OLDSOVER) \
+-	$(OBJSDLL)
++$(OLDSOVER): $(LIBSOVER)
++	$(LN_SF) $(LIBSOVER) $(OLDSOVER)
+ 
+ pngtest: pngtest.o $(LIBSO)
+ 	$(CC) -o pngtest $(CFLAGS) pngtest.o $(LDFLAGS)
+@@ -190,9 +188,8 @@
+ 	-@$(RM_F) $(DL)/$(OLDSOMAJ)
+ 	-@$(RM_F) $(DL)/$(OLDSOVER)*
+ 	cp $(LIBSOVER) $(DL)
+-	cp $(OLDSOVER) $(DL)
++	$(LN_SF) $(LIBSOVER) $(DL)/$(OLDSOVER)
+ 	chmod 755 $(DL)/$(LIBSOVER)
+-	chmod 755 $(DL)/$(OLDSOVER)
+ 	(cd $(DL); \
+ 	$(LN_SF) $(OLDSOVER) $(OLDSOMAJ); \
+ 	$(LN_SF) $(OLDSOMAJ) $(OLDSO); \
+--- libpng-1.2.12/scripts/makefile.linux.orig	2006-06-29 10:10:33.974440000 +0200
++++ libpng-1.2.12/scripts/makefile.linux	2006-06-29 10:13:16.824440000 +0200
+@@ -110,12 +110,10 @@
+ 	$(LN_SF) $(LIBSOVER) $(LIBSOMAJ)
+ 
+ $(LIBSOVER): $(OBJSDLL)
+-	$(CC) -shared -Wl,-soname,$(LIBSOMAJ) -o $(LIBSOVER) $(OBJSDLL)
++	$(CC) -shared -Wl,-soname,$(LIBSOMAJ) -o $(LIBSOVER) $(OBJSDLL) -lz -lm
+ 
+-$(OLDSOVER): $(OBJSDLL)
+-	$(CC) -shared -Wl,-soname,$(OLDSOMAJ) \
+-	-o $(OLDSOVER) \
+-	$(OBJSDLL)
++$(OLDSOVER): $(LIBSOVER)
++	$(LN_SF) $(LIBSOVER) $(OLDSOVER)
+ 
+ pngtest: pngtest.o $(LIBSO)
+ 	$(CC) -o pngtest $(CFLAGS) pngtest.o $(LDFLAGS)
+@@ -158,9 +156,8 @@
+ 	-@$(RM_F) $(DL)/$(OLDSOMAJ)
+ 	-@$(RM_F) $(DL)/$(OLDSOVER)*
+ 	cp $(LIBSOVER) $(DL)
+-	cp $(OLDSOVER) $(DL)
++	$(LN_SF) $(LIBSOVER) $(DL)/$(OLDSOVER)
+ 	chmod 755 $(DL)/$(LIBSOVER)
+-	chmod 755 $(DL)/$(OLDSOVER)
+ 	(cd $(DL); \
+ 	$(LN_SF) $(OLDSOVER) $(OLDSOMAJ); \
+ 	$(LN_SF) $(OLDSOMAJ) $(OLDSO); \

@@ -1,0 +1,46 @@
+--- libpng-1.2.31/scripts/makefile.gcmmx.orig	2008-08-21 12:54:14.000000000 +0200
++++ libpng-1.2.31/scripts/makefile.gcmmx	2008-08-23 01:23:37.018625344 +0200
+@@ -43,8 +43,8 @@
+ # Where the zlib library and include files are located.
+ #ZLIBLIB=/usr/local/lib
+ #ZLIBINC=/usr/local/include
+-ZLIBLIB=../zlib
+-ZLIBINC=../zlib
++ZLIBLIB=/usr/lib
++ZLIBINC=
+ 
+ ALIGN=
+ # for i386:
+@@ -58,8 +58,8 @@
+ 
+ # Remove -DPNG_THREAD_UNSAFE_OK if you need thread safety
+ ### for generic gcc:
+-CFLAGS=-DPNG_THREAD_UNSAFE_OK -I$(ZLIBINC) -W -Wall -O \
+-	$(ALIGN) -funroll-loops \
++CFLAGS=-DPNG_USE_PNGGCCRC -I$(ZLIBINC) -W -Wall \
++	$(OPT_FLAGS) $(ALIGN) \
+ 	-fomit-frame-pointer  # $(WARNMORE) -g -DPNG_DEBUG=5
+ ### for gcc 2.95.2 on 686:
+ #CFLAGS=-DPNG_THREAD_UNSAFE_OK -I$(ZLIBINC) -W -Wall -O \
+--- libpng-1.2.31/scripts/makefile.linux.orig	2008-08-21 12:54:14.000000000 +0200
++++ libpng-1.2.31/scripts/makefile.linux	2008-08-23 01:26:41.342625344 +0200
+@@ -35,8 +35,8 @@
+ # Where the zlib library and include files are located.
+ #ZLIBLIB=/usr/local/lib
+ #ZLIBINC=/usr/local/include
+-ZLIBLIB=../zlib
+-ZLIBINC=../zlib
++ZLIBLIB=/usr/lib
++ZLIBINC=
+ 
+ ALIGN=
+ # for i386:
+@@ -48,7 +48,7 @@
+ 
+ # for pgcc version 2.95.1, -O3 is buggy; don't use it.
+ 
+-CFLAGS=-I$(ZLIBINC) -W -Wall -O3 -funroll-loops -DPNG_NO_MMX_CODE \
++CFLAGS=-I$(ZLIBINC) -W -Wall $(OPT_FLAGS) -DPNG_NO_MMX_CODE \
+ 	$(ALIGN) # $(WARNMORE) -g -DPNG_DEBUG=5
+ 
+ LDFLAGS=-L. -Wl,-rpath,. -L$(ZLIBLIB) -Wl,-rpath,$(ZLIBLIB) -lpng12 -lz -lm
