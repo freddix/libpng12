@@ -1,7 +1,7 @@
 Summary:	PNG library
 Name:		libpng12
 Version:	1.2.50
-Release:	1
+Release:	2
 Epoch:		2
 License:	distributable
 Group:		Libraries
